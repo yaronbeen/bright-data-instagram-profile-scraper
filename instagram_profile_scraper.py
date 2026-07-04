@@ -40,8 +40,9 @@ class InstagramProfileScraper:
 
         payload = {
             "input": [{"url": url} for url in urls],
-            "limit_per_input": limit_per_input,
         }
+        if limit_per_input is not None:
+            payload["limit_per_input"] = limit_per_input
 
         params = {
             "dataset_id": self.DATASET_ID,
@@ -69,8 +70,9 @@ class InstagramProfileScraper:
 
         payload = {
             "input": [{"user_name": username} for username in usernames],
-            "limit_per_input": limit_per_input,
         }
+        if limit_per_input is not None:
+            payload["limit_per_input"] = limit_per_input
 
         params = {
             "dataset_id": self.DATASET_ID,
@@ -103,6 +105,7 @@ class InstagramProfileScraper:
             headers=headers,
             params=params,
             json=payload,
+            timeout=30,
         )
 
         response.raise_for_status()

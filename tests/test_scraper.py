@@ -75,7 +75,7 @@ class TestCollectByUrl(unittest.TestCase):
             payload["input"],
             [{"url": "https://www.instagram.com/cats_of_world_/"}],
         )
-        self.assertIsNone(payload["limit_per_input"])
+        self.assertNotIn("limit_per_input", payload)
 
     @patch("instagram_profile_scraper.requests.post")
     def test_multiple_urls_list(self, mock_post):
@@ -164,7 +164,7 @@ class TestDiscoverByUsername(unittest.TestCase):
         call_kwargs = mock_post.call_args
         payload = call_kwargs.kwargs.get("json") or call_kwargs[1].get("json")
         self.assertEqual(payload["input"], [{"user_name": "zoobarcelona"}])
-        self.assertIsNone(payload["limit_per_input"])
+        self.assertNotIn("limit_per_input", payload)
 
     @patch("instagram_profile_scraper.requests.post")
     def test_multiple_usernames_list(self, mock_post):
@@ -268,6 +268,93 @@ class TestErrorHandling(unittest.TestCase):
 
         with self.assertRaises(requests.exceptions.ConnectionError):
             self.scraper.collect_by_url("https://www.instagram.com/test/")
+
+    @patch("instagram_profile_scraper.requests.post")
+    def test_timeout_error(self, mock_post):
+        mock_post.side_effect = requests.exceptions.ReadTimeout("Read timed out")
+
+        with self.assertRaises(requests.exceptions.ReadTimeout):
+            self.scraper.collect_by_url("https://www.instagram.com/test/")
+
+
+class TestRequestTimeout(unittest.TestCase):
+    """Tests that requests include a timeout."""
+
+    def setUp(self):
+        self.scraper = InstagramProfileScraper(api_token="test_token")
+
+    @patch("instagram_profile_scraper.requests.post")
+    def test_request_includes_timeout(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = []
+        mock_response.raise_for_status = MagicMock()
+        mock_post.return_value = mock_response
+
+        self.scraper.collect_by_url("https://www.instagram.com/test/")
+
+        call_kwargs = mock_post.call_args
+        timeout = call_kwargs.kwargs.get("timeout") or call_kwargs[1].get("timeout")
+        self.assertIsNotNone(timeout)
+        self.assertGreater(timeout, 0)
+
+
+class TestPayloadLimitPerInput(unittest.TestCase):
+    """Tests that limit_per_input is only included when set."""
+
+    def setUp(self):
+        self.scraper = InstagramProfileScraper(api_token="test_token")
+
+    @patch("instagram_profile_scraper.requests.post")
+    def test_limit_excluded_when_none(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = [SAMPLE_PROFILE]
+        mock_response.raise_for_status = MagicMock()
+        mock_post.return_value = mock_response
+
+        self.scraper.collect_by_url("https://www.instagram.com/test/")
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs.get("json") or call_kwargs[1].get("json")
+        self.assertNotIn("limit_per_input", payload)
+
+    @patch("instagram_profile_scraper.requests.post")
+    def test_limit_included_when_set(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = [SAMPLE_PROFILE]
+        mock_response.raise_for_status = MagicMock()
+        mock_post.return_value = mock_response
+
+        self.scraper.collect_by_url("https://www.instagram.com/test/", limit_per_input=3)
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs.get("json") or call_kwargs[1].get("json")
+        self.assertEqual(payload["limit_per_input"], 3)
+
+    @patch("instagram_profile_scraper.requests.post")
+    def test_discover_limit_excluded_when_none(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = [SAMPLE_PROFILE]
+        mock_response.raise_for_status = MagicMock()
+        mock_post.return_value = mock_response
+
+        self.scraper.discover_by_username("test_user")
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs.get("json") or call_kwargs[1].get("json")
+        self.assertNotIn("limit_per_input", payload)
+
+    @patch("instagram_profile_scraper.requests.post")
+    def test_discover_limit_included_when_set(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = [SAMPLE_PROFILE]
+        mock_response.raise_for_status = MagicMock()
+        mock_post.return_value = mock_response
+
+        self.scraper.discover_by_username("test_user", limit_per_input=7)
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs.get("json") or call_kwargs[1].get("json")
+        self.assertEqual(payload["limit_per_input"], 7)
 
 
 if __name__ == "__main__":

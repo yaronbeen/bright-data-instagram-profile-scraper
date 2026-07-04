@@ -104,6 +104,7 @@ Discover Instagram profiles by username.
   "fbid": "25025320",
   "id": "787132",
   "followers": 284000000,
+  "following": 150,
   "posts_count": 28500,
   "is_business_account": true,
   "is_professional_account": true,
@@ -111,9 +112,11 @@ Discover Instagram profiles by username.
   "avg_engagement": 0.002,
   "external_url": "https://www.nationalgeographic.com",
   "biography": "Experience the world through the eyes of National Geographic photographers.",
-  "profile_pic_url": "https://example.com/natgeo_pic.jpg",
+  "profile_image_link": "https://example.com/natgeo_pic.jpg",
   "full_name": "National Geographic",
-  "category": "Media/News Company"
+  "category_name": "Media/News Company",
+  "is_private": false,
+  "posts": ["..."]
 }
 ```
 
@@ -149,6 +152,7 @@ except requests.exceptions.ConnectionError:
 | `ValueError`                       | Missing API token.                     |
 | `requests.exceptions.HTTPError`    | API returned 4xx/5xx (auth, rate limit, etc.). |
 | `requests.exceptions.ConnectionError` | Network connectivity issue.         |
+| `requests.exceptions.ReadTimeout`  | Request took longer than 30 seconds.   |
 
 ## Why Bright Data?
 
