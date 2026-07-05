@@ -8,7 +8,6 @@ A Python wrapper for [Bright Data's Instagram Profiles scraper API](https://get.
 ## Features
 
 - **Collect by URL** -- Retrieve profile data from one or more Instagram profile URLs
-- **Discover by Username** -- Search and discover Instagram profiles by username
 - Handles proxy rotation and CAPTCHA solving automatically via Bright Data
 - Returns clean, structured JSON ready for analysis
 - Simple, Pythonic interface with type hints
@@ -55,13 +54,8 @@ scraper = InstagramProfileScraper()
 ### 3. Collect profile data
 
 ```python
-# Collect by URL
 results = scraper.collect_by_url("https://www.instagram.com/natgeo/")
 print(results[0]["followers"])
-
-# Discover by username
-results = scraper.discover_by_username("natgeo")
-print(results[0]["full_name"])
 ```
 
 ## API Reference
@@ -82,17 +76,6 @@ Collect profile data from Instagram profile URLs.
 |-------------------|--------------------|----------|--------------------------------------|
 | `urls`            | `str \| list[str]` | Yes      | Single URL or list of profile URLs.  |
 | `limit_per_input` | `int \| None`      | No       | Max records to return per input URL. |
-
-**Returns:** `list[dict]` -- List of profile data dictionaries.
-
-### `discover_by_username(usernames, limit_per_input=None)`
-
-Discover Instagram profiles by username.
-
-| Parameter         | Type               | Required | Description                               |
-|-------------------|--------------------|----------|-------------------------------------------|
-| `usernames`       | `str \| list[str]` | Yes      | Single username or list of usernames.      |
-| `limit_per_input` | `int \| None`      | No       | Max records to return per input username.  |
 
 **Returns:** `list[dict]` -- List of profile data dictionaries.
 

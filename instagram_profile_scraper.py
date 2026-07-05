@@ -6,8 +6,7 @@ from typing import List, Optional, Dict, Any, Union
 class InstagramProfileScraper:
     """Wrapper for Bright Data's Instagram Profiles scraper API.
 
-    Provides methods to collect profile data by URL or discover
-    profiles by username using Bright Data's dataset infrastructure.
+    Collects profile data by URL using Bright Data's dataset infrastructure.
     """
 
     BASE_URL = "https://api.brightdata.com/datasets/v3/scrape"
@@ -46,38 +45,6 @@ class InstagramProfileScraper:
 
         params = {
             "dataset_id": self.DATASET_ID,
-            "include_errors": "true",
-        }
-
-        return self._make_request(params, payload)
-
-    def discover_by_username(
-        self,
-        usernames: Union[str, List[str]],
-        limit_per_input: Optional[int] = None,
-    ) -> List[Dict[str, Any]]:
-        """Discover Instagram profiles by username.
-
-        Args:
-            usernames: Single username or list of usernames.
-            limit_per_input: Optional limit of records per input.
-
-        Returns:
-            List of profile data dictionaries.
-        """
-        if isinstance(usernames, str):
-            usernames = [usernames]
-
-        payload = {
-            "input": [{"user_name": username} for username in usernames],
-        }
-        if limit_per_input is not None:
-            payload["limit_per_input"] = limit_per_input
-
-        params = {
-            "dataset_id": self.DATASET_ID,
-            "type": "discover_new",
-            "discover_by": "user_name",
             "include_errors": "true",
         }
 
