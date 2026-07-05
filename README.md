@@ -1,7 +1,8 @@
 # Bright Data Instagram Profile Scraper
 
-![Python](https://img.shields.io/badge/Python-3.7%2B-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Bright Data](https://img.shields.io/badge/Powered%20by-Bright%20Data-orange.svg)](https://get.brightdata.com/1tndi4600b25)
 
 A Python wrapper for [Bright Data's Instagram Profiles scraper API](https://get.brightdata.com/1tndi4600b25). Collect detailed Instagram profile data including follower counts, engagement rates, business account status, and more -- without managing proxies, browsers, or CAPTCHAs.
 
@@ -15,7 +16,7 @@ A Python wrapper for [Bright Data's Instagram Profiles scraper API](https://get.
 
 ## Prerequisites
 
-- Python 3.7 or higher
+- Python 3.8 or higher
 - A Bright Data API token ([sign up here](https://get.brightdata.com/1tndi4600b25))
 
 ## Installation
@@ -137,17 +138,22 @@ except requests.exceptions.ConnectionError:
 | `requests.exceptions.ConnectionError` | Network connectivity issue.         |
 | `requests.exceptions.ReadTimeout`  | Request took longer than 30 seconds.   |
 
+## Running Tests
+
+```bash
+python -m pytest tests/ -v
+```
+
 ## Why Bright Data?
 
-Scraping Instagram at scale is hard. Bright Data handles the infrastructure so you can focus on the data:
+[Bright Data](https://get.brightdata.com/1tndi4600b25) handles the hard parts of Instagram scraping so you can focus on the data:
 
-- **Built-in proxy rotation and CAPTCHA solving** -- never get blocked
-- **No need to manage browsers or proxies** -- just call the API
-- **Structured JSON output** ready for analysis and pipelines
-- **99.99% uptime SLA** for production workloads
-- **Scales to millions of requests** without additional setup
-- **Real-time data delivery** with ~1s average response time
-- **Compliant public data collection** following platform terms
+- **Pre-built scrapers** - No need to build or maintain scraping logic
+- **Structured data** - Clean JSON output ready for analysis and pipelines
+- **High success rate** - Built-in proxy rotation and anti-blocking
+- **Scalable** - Handle thousands of requests with consistent performance
+- **Compliant** - Ethical data collection with full regulatory compliance
+- **Pay per result** - Only $0.0015 per record with no upfront costs
 
 [Get started with Bright Data](https://get.brightdata.com/1tndi4600b25)
 

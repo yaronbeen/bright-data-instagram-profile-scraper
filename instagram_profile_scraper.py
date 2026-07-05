@@ -1,10 +1,20 @@
+"""
+Bright Data Instagram Profile Scraper
+
+A Python wrapper for Bright Data's Instagram Profiles scraper API.
+Collect profile data (followers, engagement, bio, etc.) by URL.
+
+Dataset ID: gd_l1vikfch901nx3by4
+Pricing: $0.0015/record
+"""
+
 import os
 import requests
 from typing import List, Optional, Dict, Any, Union
 
 
 class InstagramProfileScraper:
-    """Wrapper for Bright Data's Instagram Profiles scraper API.
+    """Client for the Bright Data Instagram Profiles scraper API.
 
     Collects profile data by URL using Bright Data's dataset infrastructure.
     """
@@ -13,11 +23,20 @@ class InstagramProfileScraper:
     DATASET_ID = "gd_l1vikfch901nx3by4"
 
     def __init__(self, api_token: Optional[str] = None):
+        """Initialize the scraper with a Bright Data API token.
+
+        Args:
+            api_token: Bright Data API token. If not provided, reads from
+                       the BRIGHT_DATA_API_TOKEN environment variable.
+
+        Raises:
+            ValueError: If no API token is provided or found in env.
+        """
         self.api_token = api_token or os.getenv("BRIGHT_DATA_API_TOKEN")
         if not self.api_token:
             raise ValueError(
-                "API token is required. Pass it as argument or set BRIGHT_DATA_API_TOKEN env variable. "
-                "Get your token at https://brightdata.com"
+                "API token is required. Pass it directly or set the "
+                "BRIGHT_DATA_API_TOKEN environment variable."
             )
 
     def collect_by_url(
