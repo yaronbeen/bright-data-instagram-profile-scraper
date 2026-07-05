@@ -4,7 +4,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Bright Data](https://img.shields.io/badge/Powered%20by-Bright%20Data-orange.svg)](https://get.brightdata.com/1tndi4600b25)
 
-A Python wrapper for [Bright Data's Instagram Profiles scraper API](https://get.brightdata.com/1tndi4600b25). Collect detailed Instagram profile data including follower counts, engagement rates, business account status, and more -- without managing proxies, browsers, or CAPTCHAs.
+A Python wrapper for Bright Data's Instagram Profiles scraper API. Collect detailed Instagram profile data including follower counts, engagement rates, business account status, and more -- without managing proxies, browsers, or CAPTCHAs.
+
+> **All Instagram scrapers:** **Profile Scraper** · [Profile Discovery](https://github.com/yaronbeen/bright-data-instagram-profile-discovery) · [Posts Scraper](https://github.com/yaronbeen/bright-data-instagram-posts-scraper) · [Posts Discovery](https://github.com/yaronbeen/bright-data-instagram-posts-discovery) · [Reels Scraper](https://github.com/yaronbeen/bright-data-instagram-reels-scraper) · [Reels Discovery](https://github.com/yaronbeen/bright-data-instagram-reels-discovery) · [Reels (All) Discovery](https://github.com/yaronbeen/bright-data-instagram-reels-all-discovery) · [Comments Scraper](https://github.com/yaronbeen/bright-data-instagram-comments-scraper)
 
 ## Features
 
@@ -14,15 +16,22 @@ A Python wrapper for [Bright Data's Instagram Profiles scraper API](https://get.
 - Simple, Pythonic interface with type hints
 - Supports batch requests for multiple profiles at once
 
+## Use Cases
+
+- Track competitor follower growth over time
+- Vet influencers before partnerships (engagement rate, business account status)
+- Build audience demographics dashboards
+- Monitor brand account metrics
+
 ## Prerequisites
 
 - Python 3.8 or higher
-- A Bright Data API token ([sign up here](https://get.brightdata.com/1tndi4600b25))
+- A Bright Data API token (create an account at https://brightdata.com)
 
 ## Installation
 
 ```bash
-git clone https://github.com/luminati-io/bright-data-instagram-profile-scraper.git
+git clone https://github.com/yaronbeen/bright-data-instagram-profile-scraper.git
 cd bright-data-instagram-profile-scraper
 pip install -r requirements.txt
 ```
@@ -55,7 +64,7 @@ scraper = InstagramProfileScraper()
 ### 3. Collect profile data
 
 ```python
-results = scraper.collect_by_url("https://www.instagram.com/natgeo/")
+results = scraper.collect_by_url("https://www.instagram.com/leomessi/")
 print(results[0]["followers"])
 ```
 
@@ -84,25 +93,27 @@ Collect profile data from Instagram profile URLs.
 
 ```json
 {
-  "account": "natgeo",
-  "fbid": "25025320",
-  "id": "787132",
-  "followers": 284000000,
-  "following": 150,
-  "posts_count": 28500,
+  "account": "plantbasedmag",
+  "fbid": "17841403842",
+  "id": "5821462",
+  "followers": 147832,
+  "following": 413,
+  "posts_count": 2847,
   "is_business_account": true,
   "is_professional_account": true,
-  "is_verified": true,
-  "avg_engagement": 0.002,
-  "external_url": "https://www.nationalgeographic.com",
-  "biography": "Experience the world through the eyes of National Geographic photographers.",
-  "profile_image_link": "https://example.com/natgeo_pic.jpg",
-  "full_name": "National Geographic",
-  "category_name": "Media/News Company",
+  "is_verified": false,
+  "avg_engagement": 0.018,
+  "external_url": "https://www.plantbasedmag.com",
+  "biography": "Plant-powered recipes, tips & lifestyle. New posts daily.",
+  "profile_image_link": "https://scontent.cdninstagram.com/v/pbm_pic.jpg",
+  "full_name": "Plant Based Magazine",
+  "category_name": "Health/Beauty",
   "is_private": false,
   "posts": ["..."]
 }
 ```
+
+> Note: This is a representative example. Actual field values and available fields may vary.
 
 ## Configuration
 
@@ -122,7 +133,7 @@ from instagram_profile_scraper import InstagramProfileScraper
 
 try:
     scraper = InstagramProfileScraper()
-    results = scraper.collect_by_url("https://www.instagram.com/natgeo/")
+    results = scraper.collect_by_url("https://www.instagram.com/leomessi/")
 except ValueError as e:
     print(f"Configuration error: {e}")
 except requests.exceptions.HTTPError as e:
@@ -138,6 +149,13 @@ except requests.exceptions.ConnectionError:
 | `requests.exceptions.ConnectionError` | Network connectivity issue.         |
 | `requests.exceptions.ReadTimeout`  | Request took longer than 30 seconds.   |
 
+## Rate Limits
+
+- **Sync mode:** Results returned directly in the response. Best for small batches (1-10 inputs).
+- **Async mode:** For larger jobs, use the async API. See [Bright Data API docs](https://docs.brightdata.com/datasets/functions/introduction).
+- **No hard rate limit** on API calls, but performance varies with batch size.
+- **Pricing:** $0.0015 per record ($1.50 per 1,000 records).
+
 ## Running Tests
 
 ```bash
@@ -146,14 +164,15 @@ python -m pytest tests/ -v
 
 ## Why Bright Data?
 
-[Bright Data](https://get.brightdata.com/1tndi4600b25) handles the hard parts of Instagram scraping so you can focus on the data:
+Instagram blocks profile scraping aggressively. Bright Data handles the hard parts so you can focus on the data:
 
-- **Pre-built scrapers** - No need to build or maintain scraping logic
-- **Structured data** - Clean JSON output ready for analysis and pipelines
-- **High success rate** - Built-in proxy rotation and anti-blocking
-- **Scalable** - Handle thousands of requests with consistent performance
-- **Compliant** - Ethical data collection with full regulatory compliance
-- **Pay per result** - Only $0.0015 per record with no upfront costs
+- **Anti-bot detection handled** - Proxy rotation, CAPTCHA solving, and fingerprint management built in
+- **31 structured fields per profile** - No HTML parsing or data extraction logic needed
+- **Works on all account types** - Business, creator, and personal accounts alike
+- **Fast and reliable** - ~1 second average response time with high success rates
+- **$0.0015/record** - Pay only for successful results, no infrastructure to maintain
+
+For full API documentation, see the [Bright Data API Reference](https://docs.brightdata.com/datasets/functions/introduction).
 
 [Get started with Bright Data](https://get.brightdata.com/1tndi4600b25)
 
